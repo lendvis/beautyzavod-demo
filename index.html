@@ -89,37 +89,51 @@ p{margin:0}
 .btn-lite:hover{border-color:var(--milk);background:rgba(250,246,242,.1)}
 .btn-sm{padding:.62em 1.15em;font-size:12.5px}
 
-/* ── Первый экран: светлый, коллаж из их работ ── */
-.hero{position:relative;overflow:hidden;padding-block:clamp(1.8rem,5vw,3.4rem)}
-.hero::before{content:"";position:absolute;inset:0;z-index:0;
-  background:radial-gradient(90% 60% at 88% 8%,rgba(200,144,131,.28),transparent 66%)}
-.hero-in{position:relative;z-index:2;display:grid;grid-template-columns:1fr;gap:clamp(1.4rem,4vw,2.6rem);align-items:center}
-@media(min-width:940px){.hero-in{grid-template-columns:1.04fr .96fr}}
+/* ── Первый экран: настоящая 3D-сцена ───────────────────────────────────
+   Кадры стоят на разной глубине внутри одной preserve-3d сцены, камера
+   поворачивается от курсора, отъезжает по прокрутке и слегка дышит сама,
+   чтобы объём был виден даже без единого движения мышью. */
+.hero{position:relative;min-height:clamp(520px,86svh,820px);display:grid;align-items:end;
+  overflow:hidden;isolation:isolate;background:var(--milk)}
+.stage{position:absolute;inset:0;z-index:0;perspective:900px;perspective-origin:50% 42%}
+.cam{position:absolute;inset:0;transform-style:preserve-3d;
+  transform:translateZ(var(--dolly,0px)) rotateX(var(--cy,0deg)) rotateY(var(--cx,0deg));
+  transition:transform .18s cubic-bezier(.2,.8,.3,1)}
+.plane{position:absolute;left:50%;top:50%;margin:0;transform-style:preserve-3d;
+  width:var(--w,220px);
+  transform:translate3d(calc(-50% + var(--x)),calc(-50% + var(--y)),var(--z)) rotateY(var(--ry,0deg)) rotateX(var(--rx,0deg));
+  box-shadow:0 30px 60px -40px rgba(34,30,28,.6);background:var(--milk-2)}
+.plane img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:var(--ar,3/4)}
+/* Дальние кадры притушены дымкой: так глаз читает расстояние */
+.plane::after{content:"";position:absolute;inset:0;background:var(--milk);opacity:var(--haze,0)}
+
+.hero-veil{position:absolute;inset:0;z-index:1;pointer-events:none;background:
+  linear-gradient(100deg,var(--milk) 20%,rgba(250,246,242,.86) 42%,rgba(250,246,242,.1) 66%,transparent),
+  linear-gradient(to top,var(--milk) 2%,transparent 26%)}
+.hero-in{position:relative;z-index:2;width:100%;padding-block:clamp(2rem,6vw,4rem)}
 .hero .kick{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--clay);margin-bottom:1rem}
-.hero h1{font-size:clamp(2.5rem,8.4vw,4.6rem);max-width:12ch;letter-spacing:-.018em}
+.hero h1{font-size:clamp(2.5rem,8.4vw,4.8rem);max-width:12ch;letter-spacing:-.018em}
 .hero h1 em{font-style:normal;color:var(--clay)}
-.hero .lead{margin-top:1.1rem;max-width:42ch;color:var(--warm);font-size:clamp(.97rem,2.6vw,1.08rem)}
+.hero .lead{margin-top:1.1rem;max-width:40ch;color:var(--warm);font-size:clamp(.97rem,2.6vw,1.08rem)}
 .hero-cta{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.5rem}
-.hero-stats{display:flex;flex-wrap:wrap;gap:.5rem 1.9rem;margin-top:1.9rem;padding-top:1.2rem;border-top:1px solid var(--sand)}
+.hero-stats{display:flex;flex-wrap:wrap;gap:.5rem 1.9rem;margin-top:1.8rem;padding-top:1.1rem;border-top:1px solid var(--sand);max-width:640px}
 .hs{display:flex;align-items:baseline;gap:.45rem}
 .hs b{font-family:var(--f-display);font-size:1.5rem;color:var(--clay);font-variant-numeric:tabular-nums}
 .hs span{font-size:11.5px;color:var(--warm-dim);max-width:16ch;line-height:1.35}
-
-/* Коллаж: три кадра лесенкой, лёгкая перспектива */
-/* Пропорцию держит сам коллаж, а не картинки внутри: при auto-строках колонки
-   расходились по высоте, потому что figure и img ссылались на высоту друг друга. */
-.collage{position:relative;display:grid;grid-template-columns:1.12fr .88fr;grid-template-rows:1fr 1fr;
-  aspect-ratio:1.2;gap:.5rem;perspective:1200px}
-.collage figure{margin:0;overflow:hidden;background:var(--milk-2)}
-.collage img{width:100%;height:100%;object-fit:cover;display:block}
-.collage .a{grid-row:1 / span 2;min-height:0}
-.collage .b,.collage .c{min-height:0}
-.collage .mono{position:absolute;right:-.1em;bottom:-.24em;z-index:2;font-family:var(--f-display);
-  font-size:clamp(5rem,13vw,9rem);line-height:.72;color:var(--clay);opacity:.14;pointer-events:none;user-select:none}
-@media (prefers-reduced-motion:no-preference){
-  .collage figure{transition:transform .5s cubic-bezier(.2,.8,.3,1)}
-  .collage:hover .a{transform:translateY(-6px)}
-  .collage:hover .c{transform:translateY(6px)}
+.hero-mono{position:absolute;right:2%;bottom:4%;z-index:1;font-family:var(--f-display);
+  font-size:clamp(4rem,11vw,8rem);line-height:.7;color:var(--clay);opacity:.13;pointer-events:none;user-select:none}
+@media (prefers-reduced-motion:reduce){
+  .cam{transform:none!important}
+}
+/* На узком экране кадры ложились поверх заголовка и кнопок.
+   Сцена живёт в верхней половине, текст стоит на чистом молоке. */
+@media(max-width:900px){
+  .hero{min-height:clamp(600px,94svh,860px);align-items:end}
+  /* Смещения кадров заданы в vh, поэтому одной высоты сцены мало:
+     поджимаем всю сцену кверху и уменьшаем, чтобы текст стоял на чистом молоке. */
+  .stage{bottom:auto;height:52%;transform:translateY(-13%) scale(.82);transform-origin:50% 26%}
+  .hero-veil{background:linear-gradient(to top,var(--milk) 58%,rgba(250,246,242,.9) 66%,rgba(250,246,242,.35) 78%,transparent 92%)}
+  .hero-mono{bottom:auto;top:1%;right:4%}
 }
 
 /* ── Бегущая строка направлений ── */
@@ -172,14 +186,32 @@ section.blk{padding-block:clamp(2.6rem,7vw,5rem)}
 .blk-h h2{font-size:clamp(1.6rem,5.4vw,2.6rem)}
 .blk-h p{font-size:13.5px;color:var(--warm-dim);max-width:50ch;margin-top:.6rem}
 
+/* ── Цеха кольцом: пять панелей на цилиндре, поворот при выборе ──
+   Это не украшение, а сам переключатель: панели — кнопки с фокусом и aria. */
+.ring-wrap{position:relative;height:clamp(230px,34vw,300px);perspective:1100px;margin-bottom:1.4rem}
+.ring{position:absolute;inset:0;transform-style:preserve-3d;
+  transform:translateZ(calc(-1 * var(--r))) rotateY(calc(var(--i,0) * -72deg));
+  transition:transform .75s cubic-bezier(.22,.85,.3,1);--r:clamp(210px,32vw,330px)}
+.panel{position:absolute;left:50%;top:50%;width:clamp(150px,26vw,220px);
+  translate:-50% -50%;transform:rotateY(calc(var(--n) * 72deg)) translateZ(var(--r));
+  background:var(--milk);border:1px solid var(--sand);cursor:pointer;font:inherit;color:inherit;
+  padding:0;overflow:hidden;text-align:left;transition:border-color .3s,box-shadow .3s}
+.panel img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;
+  filter:saturate(.55) brightness(1.04);transition:filter .4s}
+.panel .lbl{padding:.65rem .8rem .75rem;display:block}
+.panel .lbl b{display:block;font-family:var(--f-display);font-size:1.15rem;font-weight:400;line-height:1.1}
+.panel .lbl span{font-size:11px;color:var(--warm-dim)}
+.panel[aria-pressed="true"]{border-color:var(--clay);box-shadow:0 24px 46px -30px rgba(34,30,28,.6)}
+.panel[aria-pressed="true"] img{filter:none}
+.ring-nav{position:absolute;left:0;right:0;bottom:-.2rem;z-index:3;display:flex;justify-content:center;gap:.5rem}
+.ring-nav button{width:38px;height:38px;border:1px solid var(--line);background:var(--milk);cursor:pointer;
+  color:var(--graphite);font-size:15px;line-height:1;transition:border-color .2s,color .2s}
+.ring-nav button:hover{border-color:var(--clay);color:var(--clay)}
+.ring-now{text-align:center;font-size:12px;color:var(--warm-dim);margin-bottom:1.2rem}
+.ring-now b{font-family:var(--f-display);font-size:1.05rem;color:var(--graphite);font-weight:400}
+@media (prefers-reduced-motion:reduce){.ring{transition:none}}
+
 /* ── Прайс ── */
-.shops{display:flex;gap:.4rem;overflow-x:auto;padding-bottom:.6rem;margin-bottom:1.6rem;scrollbar-width:none}
-.shops::-webkit-scrollbar{display:none}
-.shop{flex:0 0 auto;cursor:pointer;font:inherit;color:var(--warm);
-  background:transparent;border:1px solid var(--line);padding:.6em 1.15em;white-space:nowrap;
-  font-size:13px;font-weight:500;transition:background-color .2s,border-color .2s,color .2s}
-.shop:hover{border-color:var(--clay-soft);color:var(--graphite)}
-.shop[aria-pressed="true"]{background:var(--graphite);border-color:var(--graphite);color:var(--milk)}
 .grp{border-bottom:1px solid var(--sand)}
 .grp[open]{background:var(--milk)}
 .grp-h{list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:.7rem;
@@ -339,26 +371,23 @@ footer{padding-block:2rem;color:var(--warm-dim);border-top:1px solid var(--line-
 <main id="top">
 
   <section class="hero">
+    <div class="stage" id="stage" aria-hidden="true">
+      <div class="cam" id="cam"></div>
+    </div>
+    <div class="hero-veil"></div>
+    <span class="hero-mono" aria-hidden="true">BZ</span>
     <div class="wrap hero-in">
-      <div>
-        <p class="kick">Самара · Вилоновская, 44</p>
-        <h1>Пять цехов красоты <em>под одной крышей</em></h1>
-        <p class="lead">Волосы, ногти, брови и ресницы, косметология и тело. Салон, где не нужно ездить по трём адресам ради одного образа.</p>
-        <div class="hero-cta">
-          <a class="btn btn-c" href="#zapis">Записаться</a>
-          <a class="btn btn-o" href="#price">Смотреть цены</a>
-        </div>
-        <div class="hero-stats">
-          <div class="hs"><b>4,9</b><span>215 оценок на Яндекс Картах</span></div>
-          <div class="hs"><b>138</b><span>отзывов</span></div>
-          <div class="hs"><b>148 м</b><span>от остановки «Вилоновская»</span></div>
-        </div>
+      <p class="kick">Самара · Вилоновская, 44</p>
+      <h1>Пять цехов красоты <em>под одной крышей</em></h1>
+      <p class="lead">Волосы, ногти, брови и ресницы, косметология и тело. Салон, где не нужно ездить по трём адресам ради одного образа.</p>
+      <div class="hero-cta">
+        <a class="btn btn-c" href="#zapis">Записаться</a>
+        <a class="btn btn-o" href="#price">Смотреть цены</a>
       </div>
-      <div class="collage tilt" data-tilt data-depth="7">
-        <figure class="a"><img src="img/int-desk.jpg" alt="Маникюрный стол у окна в зале студии" fetchpriority="high"></figure>
-        <figure class="b"><img src="img/hair-1.jpg" alt="Гладкое окрашивание после укладки" fetchpriority="high"></figure>
-        <figure class="c"><img src="img/nails-3.jpg" alt="Маникюр в нюдовом покрытии" loading="lazy"></figure>
-        <span class="mono" aria-hidden="true">BZ</span>
+      <div class="hero-stats">
+        <div class="hs"><b>4,9</b><span>215 оценок на Яндекс Картах</span></div>
+        <div class="hs"><b>138</b><span>отзывов</span></div>
+        <div class="hs"><b>148 м</b><span>от остановки «Вилоновская»</span></div>
       </div>
     </div>
   </section>
@@ -378,7 +407,14 @@ footer{padding-block:2rem;color:var(--warm-dim);border-top:1px solid var(--line-
         <h2>Цены</h2>
         <p>Тринадцать разделов прайса собраны в пять цехов, чтобы не листать чужое. Выберите свой.</p>
       </div>
-      <div class="shops" id="shops" role="tablist" aria-label="Цеха"></div>
+      <div class="ring-wrap">
+        <div class="ring" id="ring"></div>
+        <div class="ring-nav">
+          <button type="button" id="ringPrev" aria-label="Предыдущий цех">‹</button>
+          <button type="button" id="ringNext" aria-label="Следующий цех">›</button>
+        </div>
+      </div>
+      <p class="ring-now">Смотрите цены цеха <b id="ringNow">Волосы</b></p>
       <div id="groups"></div>
       <p class="price-note">Цены из их онлайн-записи, той же, что показывает Яндекс. У окрашивания и ухода стоимость зависит от длины и густоты волос, салон предупреждает об этом сам.</p>
     </div>
@@ -760,8 +796,11 @@ $('chapters').innerHTML = SHOPS.map((s, i) => `
 
 let active = 0;
 
-$('shops').innerHTML = SHOPS.map((s, i) =>
-  `<button class="shop" type="button" role="tab" aria-pressed="${i === 0}" data-i="${i}">${esc(s.name)}</button>`).join('');
+$('ring').innerHTML = SHOPS.map((sh, i) =>
+  `<button class="panel" type="button" aria-pressed="${i === 0}" data-i="${i}" style="--n:${i}">
+     <img src="img/${sh.ph}.jpg" alt="" loading="lazy">
+     <span class="lbl"><b>${esc(sh.name)}</b><span>${esc(sh.lead[0])} от ${rub(sh.lead[1])}</span></span>
+   </button>`).join('');
 
 function draw(){
   const s = SHOPS[active];
@@ -789,15 +828,19 @@ function draw(){
 }
 
 function select(i){
-  active = i;
-  $('shops').querySelectorAll('.shop').forEach(x => x.setAttribute('aria-pressed', +x.dataset.i === i));
+  active = (i + SHOPS.length) % SHOPS.length;
+  $('ring').style.setProperty('--i', active);
+  $('ringNow').textContent = SHOPS[active].name;
+  $('ring').querySelectorAll('.panel').forEach(x => x.setAttribute('aria-pressed', +x.dataset.i === active));
   draw();
 }
 
-$('shops').addEventListener('click', e => {
-  const b = e.target.closest('.shop'); if (!b) return;
+$('ring').addEventListener('click', e => {
+  const b = e.target.closest('.panel'); if (!b) return;
   select(+b.dataset.i);
 });
+$('ringPrev').addEventListener('click', () => select(active - 1));
+$('ringNext').addEventListener('click', () => select(active + 1));
 
 /* Кнопка в главе открывает прайс уже на нужном цехе */
 $('chapters').addEventListener('click', e => {
@@ -807,6 +850,49 @@ $('chapters').addEventListener('click', e => {
 
 $('promos').innerHTML = PROMOS.map(([name, price, desc]) =>
   `<div class="promo tilt" data-tilt data-depth="9"><b>${esc(name)}</b><span class="pr">${rub(price)}</span>${desc ? `<span>${esc(desc)}</span>` : ''}</div>`).join('');
+
+/* ── Сцена первого экрана ──────────────────────────────────────────────
+   Кадры расставлены вручную по глубине: ближние крупнее и смещаются сильнее,
+   дальние притушены дымкой. Камера считается одним rAF-циклом. */
+const PLANES = [
+  ['int-desk',  -560, -34, -18, 300, 14, .34],
+  ['nails-1',   -380,  30, -26, 250,-12, .22],
+  ['hair-1',    -210, -30,  18, 260,  9, .12],
+  ['care-4',    -120,  34,  22, 190,-10, .08],
+  ['nails-9',     40, -22, -34, 200,  7, 0],
+  ['int-wash',   120,  26,   4, 230, -8, 0],
+  ['nails-11',   240, -14,  30, 170,  6, 0]
+];
+$('cam').innerHTML = PLANES.map(([f, z, x, y, w, ry, haze]) =>
+  `<figure class="plane" style="--z:${z}px;--x:${x}vw;--y:${y}vh;--w:clamp(120px,${w / 11}vw,${w}px);--ry:${ry}deg;--haze:${haze}">
+     <img src="img/${f}.jpg" alt="" loading="${z > -300 ? 'eager' : 'lazy'}">
+   </figure>`).join('');
+
+(function camera(){
+  const cam = $('cam');
+  if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  let px = 0, py = 0, tx = 0, ty = 0, t = 0;
+  const hover = matchMedia('(hover:hover)').matches;
+  if (hover){
+    addEventListener('pointermove', e => {
+      tx = (e.clientX / innerWidth - .5) * 2;
+      ty = (e.clientY / innerHeight - .5) * 2;
+    }, {passive:true});
+  }
+  function frame(){
+    t += 0.006;
+    /* Собственное дыхание сцены: объём виден и без курсора */
+    const idleX = Math.sin(t) * .42, idleY = Math.cos(t * .77) * .26;
+    px += ((tx + idleX) - px) * .06;
+    py += ((ty + idleY) - py) * .06;
+    const sc = Math.min(1, scrollY / (innerHeight || 1));
+    cam.style.setProperty('--cx', (px * 9).toFixed(2) + 'deg');
+    cam.style.setProperty('--cy', (-py * 6).toFixed(2) + 'deg');
+    cam.style.setProperty('--dolly', (sc * 220).toFixed(0) + 'px');
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
 
 /* Лента работ */
 const DECK = [
@@ -818,27 +904,22 @@ const DECK = [
 $('deck').innerHTML = DECK.map(([f, cap]) =>
   `<figure><img src="img/${f}.jpg" alt="${esc(cap)}" loading="lazy"><figcaption>${esc(cap)}</figcaption></figure>`).join('');
 
-/* Наклон по курсору. JS только считает угол, рисует CSS.
-   На тач-экранах и при отключённой анимации не включается вовсе. */
+/* Наклон по курсору на карточках акций */
 const canTilt = matchMedia('(hover:hover)').matches
   && !matchMedia('(prefers-reduced-motion:reduce)').matches;
 if (canTilt){
-  document.querySelectorAll('[data-tilt]').forEach(el => {
+  document.addEventListener('pointermove', e => {
+    const el = e.target.closest('[data-tilt]'); if (!el) return;
     const depth = +el.dataset.depth || 6;
-    el.addEventListener('pointermove', e => {
-      const b = el.getBoundingClientRect();
-      const x = (e.clientX - b.left) / b.width - .5;
-      const y = (e.clientY - b.top) / b.height - .5;
-      el.style.setProperty('--ry', (x * depth).toFixed(2) + 'deg');
-      el.style.setProperty('--rx', (-y * depth).toFixed(2) + 'deg');
-      el.style.setProperty('--tz', '12px');
-    });
-    el.addEventListener('pointerleave', () => {
-      el.style.setProperty('--rx', '0deg');
-      el.style.setProperty('--ry', '0deg');
-      el.style.setProperty('--tz', '0px');
-    });
-  });
+    const b = el.getBoundingClientRect();
+    el.style.setProperty('--ry', (((e.clientX - b.left) / b.width - .5) * depth).toFixed(2) + 'deg');
+    el.style.setProperty('--rx', ((-((e.clientY - b.top) / b.height - .5)) * depth).toFixed(2) + 'deg');
+    el.style.setProperty('--tz', '12px');
+  }, {passive:true});
+  document.addEventListener('pointerout', e => {
+    const el = e.target.closest('[data-tilt]'); if (!el) return;
+    el.style.setProperty('--rx', '0deg'); el.style.setProperty('--ry', '0deg'); el.style.setProperty('--tz', '0px');
+  }, {passive:true});
 }
 
 $('form').addEventListener('submit', e => {

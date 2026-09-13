@@ -106,11 +106,13 @@ p{margin:0}
 .hs span{font-size:11.5px;color:var(--warm-dim);max-width:16ch;line-height:1.35}
 
 /* Коллаж: три кадра лесенкой, лёгкая перспектива */
-.collage{position:relative;display:grid;grid-template-columns:1.15fr .85fr;grid-template-rows:1fr 1fr;
-  gap:.5rem;perspective:1200px}
+/* Пропорцию держит сам коллаж, а не картинки внутри: при auto-строках колонки
+   расходились по высоте, потому что figure и img ссылались на высоту друг друга. */
+.collage{position:relative;display:grid;grid-template-columns:1.12fr .88fr;grid-template-rows:1fr 1fr;
+  aspect-ratio:1.2;gap:.5rem;perspective:1200px}
 .collage figure{margin:0;overflow:hidden;background:var(--milk-2)}
 .collage img{width:100%;height:100%;object-fit:cover;display:block}
-.collage .a{grid-row:span 2;aspect-ratio:3/4.1;min-height:0}
+.collage .a{grid-row:1 / span 2;min-height:0}
 .collage .b,.collage .c{min-height:0}
 .collage .mono{position:absolute;right:-.1em;bottom:-.24em;z-index:2;font-family:var(--f-display);
   font-size:clamp(5rem,13vw,9rem);line-height:.72;color:var(--clay);opacity:.14;pointer-events:none;user-select:none}
@@ -178,12 +180,22 @@ section.blk{padding-block:clamp(2.6rem,7vw,5rem)}
   font-size:13px;font-weight:500;transition:background-color .2s,border-color .2s,color .2s}
 .shop:hover{border-color:var(--clay-soft);color:var(--graphite)}
 .shop[aria-pressed="true"]{background:var(--graphite);border-color:var(--graphite);color:var(--milk)}
-.grp{margin-bottom:1.9rem}
-.grp:last-child{margin-bottom:0}
-.grp-h{display:flex;align-items:baseline;gap:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--sand);margin-bottom:.2rem}
-.grp-h h3{font-size:clamp(1.1rem,3.4vw,1.4rem)}
-.grp-h span{font-size:11.5px;color:var(--warm-dim);margin-left:auto;white-space:nowrap}
-.item{padding:.8rem 0;border-bottom:1px solid var(--line-soft)}
+.grp{border-bottom:1px solid var(--sand)}
+.grp[open]{background:var(--milk)}
+.grp-h{list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:.7rem;
+  padding:1rem .2rem;transition:color .2s}
+.grp-h::-webkit-details-marker{display:none}
+.grp-h:hover h3{color:var(--clay)}
+.grp-h h3{font-size:clamp(1.05rem,3.2vw,1.28rem);transition:color .2s}
+.grp-h .meta{font-size:11.5px;color:var(--warm-dim);margin-left:auto;white-space:nowrap;text-align:right}
+.grp-h .meta b{display:block;font-family:var(--f-display);font-size:14px;color:var(--clay);font-weight:400;font-variant-numeric:tabular-nums}
+/* Стрелка: единственный маркер состояния, поэтому рисуем сами */
+.grp-h .arw{width:11px;height:11px;border-right:1.5px solid var(--warm);border-bottom:1.5px solid var(--warm);
+  rotate:45deg;translate:0 -3px;flex:0 0 auto;transition:rotate .25s,border-color .2s}
+.grp[open] .grp-h .arw{rotate:225deg;translate:0 2px;border-color:var(--clay)}
+.grp-body{padding:0 .2rem 1rem}
+.item{padding:.75rem 0;border-bottom:1px solid var(--line-soft)}
+.item:last-child{border-bottom:none}
 .item-top{display:flex;align-items:baseline;gap:.6rem}
 .item h4{font-family:var(--f-body);font-weight:500;font-size:14.5px;line-height:1.35;flex:1;min-width:0;margin:0}
 .item .pr{font-family:var(--f-display);font-size:1.1rem;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--clay)}
@@ -200,18 +212,57 @@ section.blk{padding-block:clamp(2.6rem,7vw,5rem)}
 .promo .pr{font-family:var(--f-display);font-size:1.35rem;color:var(--clay)}
 .promo span{font-size:12.5px;color:var(--warm-dim);line-height:1.5}
 
-/* ── Галерея с настоящей перспективой ── */
-.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.6rem;perspective:1100px}
+/* ── Трёхмерность ──────────────────────────────────────────────────────
+   Наклон считает курсор: две переменные из JS, всё остальное делает CSS.
+   На тач-экранах и при отключённой анимации остаётся плоским. */
+.tilt{transform-style:preserve-3d;will-change:transform}
+@media (hover:hover) and (prefers-reduced-motion:no-preference){
+  .tilt{transition:transform .35s cubic-bezier(.2,.8,.3,1)}
+  .tilt:hover{transition-duration:.08s}
+  .tilt[data-tilt]{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateZ(var(--tz,0px))}
+}
+
+/* Лента работ: карточки веером, глубина по оси Z */
+.deck-wrap{perspective:1400px;perspective-origin:50% 45%}
+.deck{display:flex;gap:.7rem;overflow-x:auto;padding:1.4rem .2rem 1.8rem;
+  scroll-snap-type:x mandatory;transform-style:preserve-3d;scrollbar-width:none}
+.deck::-webkit-scrollbar{display:none}
+.deck figure{margin:0;flex:0 0 clamp(180px,42vw,260px);scroll-snap-align:center;position:relative;
+  overflow:hidden;background:var(--milk-2);transform-style:preserve-3d;
+  box-shadow:0 20px 40px -30px rgba(34,30,28,.55)}
+.deck img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.deck figcaption{position:absolute;left:0;right:0;bottom:0;
+  background:linear-gradient(transparent,rgba(23,17,15,.82));color:#fff;
+  font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;padding:1.6em .7em .6em}
+@media (prefers-reduced-motion:no-preference){
+  @supports (animation-timeline: view()){
+    .deck figure{animation:fan linear both;animation-timeline:view(inline);animation-range:entry 0% exit 100%}
+    @keyframes fan{
+      from{transform:rotateY(16deg) translateZ(-70px)}
+      50%{transform:rotateY(0deg) translateZ(0)}
+      to{transform:rotateY(-16deg) translateZ(-70px)}
+    }
+  }
+}
+.deck-hint{font-size:12px;color:var(--warm-dim);margin-top:-.6rem}
+
+/* ── Галерея: кадры встают из глубины на въезде ── */
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.6rem;perspective:1200px}
 @media(min-width:700px){.gal{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}}
 .gal figure{margin:0;position:relative;overflow:hidden;transform-style:preserve-3d;
-  transition:transform .45s cubic-bezier(.2,.8,.3,1),box-shadow .45s}
-.gal figure:hover{transform:translateZ(34px) rotateX(4deg);box-shadow:0 26px 44px -28px rgba(34,30,28,.6);z-index:2}
+  box-shadow:0 14px 28px -24px rgba(34,30,28,.5)}
 .gal img{width:100%;aspect-ratio:1;object-fit:cover}
 .gal figcaption{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(transparent,rgba(23,17,15,.8));
   color:#fff;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:1.5em .7em .6em}
 .gal .tall{grid-row:span 2}
 .gal .tall img{aspect-ratio:1/2.06}
 @media(max-width:520px){.gal .tall{grid-row:span 1}.gal .tall img{aspect-ratio:1}}
+@media (prefers-reduced-motion:no-preference){
+  @supports (animation-timeline: view()){
+    .gal figure{animation:standup linear both;animation-timeline:view();animation-range:entry 0% entry 70%}
+    @keyframes standup{from{transform:rotateX(14deg) translateZ(-56px)}to{transform:none}}
+  }
+}
 
 /* ── Отзывы ── */
 .revs{display:grid;grid-template-columns:1fr;gap:.7rem}
@@ -303,7 +354,7 @@ footer{padding-block:2rem;color:var(--warm-dim);border-top:1px solid var(--line-
           <div class="hs"><b>148 м</b><span>от остановки «Вилоновская»</span></div>
         </div>
       </div>
-      <div class="collage">
+      <div class="collage tilt" data-tilt data-depth="7">
         <figure class="a"><img src="img/int-desk.jpg" alt="Маникюрный стол у окна в зале студии" fetchpriority="high"></figure>
         <figure class="b"><img src="img/hair-1.jpg" alt="Гладкое окрашивание после укладки" fetchpriority="high"></figure>
         <figure class="c"><img src="img/nails-3.jpg" alt="Маникюр в нюдовом покрытии" loading="lazy"></figure>
@@ -343,11 +394,24 @@ footer{padding-block:2rem;color:var(--warm-dim);border-top:1px solid var(--line-
     </div>
   </section>
 
+  <section class="blk" style="background:var(--milk-2)">
+    <div class="wrap">
+      <div class="blk-h rise">
+        <h2>Ленты работ</h2>
+        <p>Маникюр, окрашивание и уходы за последние месяцы. Листайте вбок: карточки разворачиваются к вам.</p>
+      </div>
+    </div>
+    <div class="deck-wrap">
+      <div class="deck" id="deck"></div>
+    </div>
+    <div class="wrap"><p class="deck-hint">Все кадры с их карточки на Яндекс Картах, приведены к одной экспозиции.</p></div>
+  </section>
+
   <section class="blk">
     <div class="wrap">
       <div class="blk-h rise">
         <h2>Работы и студия</h2>
-        <p>Фотографии с их карточки, приведённые к одной экспозиции. Лица гостей не показываем.</p>
+        <p>Шестнадцать кадров с их карточки. Лица гостей не показываем.</p>
       </div>
       <div class="gal">
         <figure class="tall"><img src="img/nails-1.jpg" alt="Маникюр с дизайном" loading="lazy"><figcaption>Ногти</figcaption></figure>
@@ -356,11 +420,15 @@ footer{padding-block:2rem;color:var(--warm-dim);border-top:1px solid var(--line-
         <figure><img src="img/nails-2.jpg" alt="Нежный маникюр" loading="lazy"><figcaption>Ногти</figcaption></figure>
         <figure class="tall"><img src="img/int-desk.jpg" alt="Маникюрный стол у окна" loading="lazy"><figcaption>Зал</figcaption></figure>
         <figure><img src="img/hair-2.jpg" alt="Причёска с украшением" loading="lazy"><figcaption>Причёска</figcaption></figure>
-        <figure><img src="img/nails-3.jpg" alt="Маникюр нюд" loading="lazy"><figcaption>Ногти</figcaption></figure>
+        <figure><img src="img/nails-7.jpg" alt="Маникюр в светлом покрытии" loading="lazy"><figcaption>Ногти</figcaption></figure>
         <figure><img src="img/int-polish.jpg" alt="Стеллаж с гель-лаками" loading="lazy"><figcaption>Палитра</figcaption></figure>
-        <figure><img src="img/care.jpg" alt="Профессиональный шампунь Davines" loading="lazy"><figcaption>Davines</figcaption></figure>
-        <figure><img src="img/nails-4.jpg" alt="Тёмный маникюр" loading="lazy"><figcaption>Ногти</figcaption></figure>
+        <figure><img src="img/care-2.jpg" alt="Профессиональный шампунь Davines" loading="lazy"><figcaption>Davines</figcaption></figure>
+        <figure><img src="img/nails-10.jpg" alt="Маникюр с росписью" loading="lazy"><figcaption>Роспись</figcaption></figure>
         <figure><img src="img/wax.jpg" alt="Восковая депиляция" loading="lazy"><figcaption>Депиляция</figcaption></figure>
+        <figure><img src="img/int-glass-2.jpg" alt="Стеклоблоки и полки студии" loading="lazy"><figcaption>Студия</figcaption></figure>
+        <figure><img src="img/care-3.jpg" alt="Профессиональный уход для волос" loading="lazy"><figcaption>Уход</figcaption></figure>
+        <figure><img src="img/nails-8.jpg" alt="Маникюр нюд" loading="lazy"><figcaption>Ногти</figcaption></figure>
+        <figure><img src="img/street-3.jpg" alt="Витрина студии днём" loading="lazy"><figcaption>Витрина</figcaption></figure>
         <figure><img src="img/facade.jpg" alt="Вход в студию" loading="lazy"><figcaption>Вход</figcaption></figure>
       </div>
     </div>
@@ -697,15 +765,27 @@ $('shops').innerHTML = SHOPS.map((s, i) =>
 
 function draw(){
   const s = SHOPS[active];
-  $('groups').innerHTML = Object.entries(s.groups).map(([g, items]) => `
-    <section class="grp">
-      <div class="grp-h"><h3>${esc(g)}</h3><span>${items.length} услуг</span></div>
-      ${items.map(([name, price, desc]) => `
-        <article class="item">
-          <div class="item-top"><h4>${esc(name)}</h4><span class="pr">${rub(price)}</span></div>
-          ${desc ? `<p class="d">${esc(desc)}</p>` : ''}
-        </article>`).join('')}
-    </section>`).join('');
+  /* Нативный details вместо простыни: 49 позиций подряд никто не читает.
+     Клавиатура и скринридеры работают без единой строчки JS. */
+  $('groups').innerHTML = Object.entries(s.groups).map(([g, items], gi) => {
+    const prices = items.map(x => x[1]);
+    const lo = Math.min(...prices), hi = Math.max(...prices);
+    return `
+    <details class="grp"${gi === 0 ? ' open' : ''}>
+      <summary class="grp-h">
+        <h3>${esc(g)}</h3>
+        <span class="meta">${items.length} услуг<b>${lo === hi ? rub(lo) : rub(lo) + ' – ' + rub(hi)}</b></span>
+        <i class="arw" aria-hidden="true"></i>
+      </summary>
+      <div class="grp-body">
+        ${items.map(([name, price, desc]) => `
+          <article class="item">
+            <div class="item-top"><h4>${esc(name)}</h4><span class="pr">${rub(price)}</span></div>
+            ${desc ? `<p class="d">${esc(desc)}</p>` : ''}
+          </article>`).join('')}
+      </div>
+    </details>`;
+  }).join('');
 }
 
 function select(i){
@@ -726,7 +806,40 @@ $('chapters').addEventListener('click', e => {
 });
 
 $('promos').innerHTML = PROMOS.map(([name, price, desc]) =>
-  `<div class="promo"><b>${esc(name)}</b><span class="pr">${rub(price)}</span>${desc ? `<span>${esc(desc)}</span>` : ''}</div>`).join('');
+  `<div class="promo tilt" data-tilt data-depth="9"><b>${esc(name)}</b><span class="pr">${rub(price)}</span>${desc ? `<span>${esc(desc)}</span>` : ''}</div>`).join('');
+
+/* Лента работ */
+const DECK = [
+  ['nails-1','Маникюр с дизайном'], ['hair-1','Окрашивание'], ['nails-11','Френч'],
+  ['int-wash','Мойки'], ['nails-9','Нюд'], ['care-4','Уход Davines'],
+  ['nails-5','Яркий цвет'], ['hair-2','Причёска'], ['nails-6','Инкрустация'],
+  ['int-desk','Зал'], ['nails-4','Тёмный маникюр'], ['care-5','Косметика']
+];
+$('deck').innerHTML = DECK.map(([f, cap]) =>
+  `<figure><img src="img/${f}.jpg" alt="${esc(cap)}" loading="lazy"><figcaption>${esc(cap)}</figcaption></figure>`).join('');
+
+/* Наклон по курсору. JS только считает угол, рисует CSS.
+   На тач-экранах и при отключённой анимации не включается вовсе. */
+const canTilt = matchMedia('(hover:hover)').matches
+  && !matchMedia('(prefers-reduced-motion:reduce)').matches;
+if (canTilt){
+  document.querySelectorAll('[data-tilt]').forEach(el => {
+    const depth = +el.dataset.depth || 6;
+    el.addEventListener('pointermove', e => {
+      const b = el.getBoundingClientRect();
+      const x = (e.clientX - b.left) / b.width - .5;
+      const y = (e.clientY - b.top) / b.height - .5;
+      el.style.setProperty('--ry', (x * depth).toFixed(2) + 'deg');
+      el.style.setProperty('--rx', (-y * depth).toFixed(2) + 'deg');
+      el.style.setProperty('--tz', '12px');
+    });
+    el.addEventListener('pointerleave', () => {
+      el.style.setProperty('--rx', '0deg');
+      el.style.setProperty('--ry', '0deg');
+      el.style.setProperty('--tz', '0px');
+    });
+  });
+}
 
 $('form').addEventListener('submit', e => {
   e.preventDefault();

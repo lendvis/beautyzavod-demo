@@ -188,7 +188,8 @@ section.blk{padding-block:clamp(2.6rem,7vw,5rem)}
 
 /* ── Цеха кольцом: пять панелей на цилиндре, поворот при выборе ──
    Это не украшение, а сам переключатель: панели — кнопки с фокусом и aria. */
-.ring-wrap{position:relative;height:clamp(230px,34vw,300px);perspective:1100px;margin-bottom:1.4rem}
+.ring-wrap{position:relative;height:clamp(230px,34vw,300px);perspective:1100px;margin-bottom:1.4rem;
+  overflow:hidden}  /* боковые панели цилиндра не должны раздвигать страницу на узком экране */
 .ring{position:absolute;inset:0;transform-style:preserve-3d;
   transform:translateZ(calc(-1 * var(--r))) rotateY(calc(var(--i,0) * -72deg));
   transition:transform .75s cubic-bezier(.22,.85,.3,1);--r:clamp(210px,32vw,330px)}
@@ -296,23 +297,40 @@ section.blk{padding-block:clamp(2.6rem,7vw,5rem)}
   }
 }
 
-/* ── Отзывы ── */
-.revs{display:grid;grid-template-columns:1fr;gap:.7rem}
-@media(min-width:760px){.revs{grid-template-columns:1fr 1fr}}
-.rev{background:rgba(250,246,242,.05);border:1px solid var(--line-lite);padding:1.4rem;display:flex;flex-direction:column;gap:.8rem}
-.rev .q{font-family:var(--f-display);font-size:2.2rem;line-height:.6;color:var(--clay-soft)}
-.rev p{font-size:13.5px;line-height:1.68;color:rgba(250,246,242,.82)}
-.rev .who{display:flex;justify-content:space-between;gap:.8rem;align-items:baseline;font-size:11.5px;color:rgba(250,246,242,.5);margin-top:auto}
+/* ── Отзывы: стена цитат, темы и мастера, которых зовут по имени ── */
+.score{display:flex;flex-wrap:wrap;align-items:flex-end;gap:1.2rem 2.4rem;margin-bottom:1.6rem}
+.score .big{display:flex;align-items:baseline;gap:.6rem}
+.score .big b{font-family:var(--f-display);font-size:clamp(3rem,9vw,4.6rem);line-height:.8;color:var(--clay-soft)}
+.score .big span{font-size:12.5px;color:rgba(250,246,242,.6);line-height:1.4}
+.topics{display:flex;flex-wrap:wrap;gap:.35rem;max-width:62ch}
+.topic{display:inline-flex;align-items:baseline;gap:.4rem;border:1px solid var(--line-lite);
+  padding:.4em .85em;font-size:12.5px;color:rgba(250,246,242,.72)}
+.topic b{font-family:var(--f-display);font-size:13.5px;color:var(--clay-soft);font-weight:400;font-variant-numeric:tabular-nums}
+
+.wall{columns:1;column-gap:.8rem}
+@media(min-width:680px){.wall{columns:2}}
+@media(min-width:1020px){.wall{columns:3}}
+.rev{break-inside:avoid;margin-bottom:.8rem;background:rgba(250,246,242,.05);
+  border:1px solid var(--line-lite);padding:1.2rem;display:flex;flex-direction:column;gap:.7rem}
+.rev .q{font-family:var(--f-display);font-size:1.9rem;line-height:.5;color:var(--clay-soft)}
+.rev p{font-size:13.5px;line-height:1.68;color:rgba(250,246,242,.84)}
+.rev .who{display:flex;justify-content:space-between;gap:.8rem;align-items:baseline;
+  font-size:11.5px;color:rgba(250,246,242,.5);margin-top:auto;padding-top:.3rem}
 .rev .who b{font-weight:500;color:var(--milk);font-size:12.5px}
+.rev .svc{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--clay-soft)}
+
+.masters{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.6rem}
+.master{border:1px solid var(--line-lite);padding:.55em .95em;font-size:12.5px;color:rgba(250,246,242,.78)}
+.master b{font-weight:500;color:var(--milk)}
+.rev-note{margin-top:1.2rem;font-size:12px;color:rgba(250,246,242,.5);max-width:60ch}
 
 /* ── Контакты ── */
 .where{display:grid;grid-template-columns:1fr;gap:1.3rem}
 @media(min-width:860px){.where{grid-template-columns:1fr 1fr;gap:clamp(1.4rem,4vw,2.6rem)}}
-.map{border:1px solid var(--line);background:
-  repeating-linear-gradient(90deg,transparent 0 34px,rgba(34,30,28,.045) 34px 35px),
-  repeating-linear-gradient(0deg,transparent 0 34px,rgba(34,30,28,.045) 34px 35px),
-  var(--milk-2);
-  min-height:250px;display:grid;place-items:center;padding:1.4rem;text-align:center}
+/* Живая карта Яндекса: не библиотека, а iframe, и грузится лениво */
+.map{border:1px solid var(--line);background:var(--milk-2);overflow:hidden;
+  min-height:clamp(280px,42vw,420px);position:relative}
+.map iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .map .pin{width:13px;height:13px;border-radius:50%;background:var(--clay);margin:0 auto .8rem;
   box-shadow:0 0 0 6px rgba(179,99,76,.16)}
 @media (prefers-reduced-motion:no-preference){.map .pin{animation:pulse 2.6s ease-out infinite}}
@@ -474,20 +492,18 @@ footer{padding-block:2rem;color:var(--warm-dim);border-top:1px solid var(--line-
     <div class="wrap">
       <div class="blk-h rise">
         <h2>Отзывы</h2>
-        <p style="color:rgba(250,246,242,.55)">Два из 138 на Яндекс Картах, сокращены.</p>
+        <p style="color:rgba(250,246,242,.55)">Настоящие, с их карточки на Яндекс Картах. Сокращены, имена мастеров оставлены как есть.</p>
       </div>
-      <div class="revs">
-        <article class="rev rise">
-          <span class="q" aria-hidden="true">“</span>
-          <p>Меня подвели в спа-салоне, куда я была записана. На глаза попался Бьюти завод, где я смогла записаться на лимфодренажный массаж в ближайшие полчаса. Очень благодарна администратору: дружелюбна, принесла кофе и воду с лимоном. Мастер всё рассказала, интересовалась самочувствием во время массажа, настоящий профессионал.</p>
-          <div class="who"><b>Света Кобальт</b><span>8 ноября 2025</span></div>
-        </article>
-        <article class="rev rise">
-          <span class="q" aria-hidden="true">“</span>
-          <p>Отличный салон, прекрасная администратор и мастер Наталья. Всё очень чисто и аккуратно, предложили кофе и воду. Пока поднимаешься в салон, на лестнице милые осенние декорации. Очень понравилось, что можно записаться онлайн. Большое количество процедур, мастер профессионал своего дела.</p>
-          <div class="who"><b>Татьяна Майорова</b><span>1 октября 2025</span></div>
-        </article>
+
+      <div class="score rise">
+        <div class="big"><b>4,9</b><span>из 5<br>215 оценок · 138 отзывов</span></div>
+        <div class="topics" id="topics"></div>
       </div>
+
+      <div class="wall" id="wall"></div>
+
+      <div class="masters" id="masters"></div>
+      <p class="rev-note">Салон отвечает почти на каждый отзыв. Мастеров гости называют по имени и возвращаются именно к ним, поэтому имена мы не прячем.</p>
     </div>
   </section>
 
@@ -499,12 +515,8 @@ footer{padding-block:2rem;color:var(--warm-dim);border-top:1px solid var(--line-
       </div>
       <div class="where">
         <div class="map">
-          <div>
-            <span class="pin"></span>
-            <div class="t">Самара, Вилоновская ул., 44</div>
-            <div class="s">Здесь будет живая карта. В макете она заглушка,<br>чтобы страница открывалась мгновенно.</div>
-            <a class="btn btn-o btn-sm" style="margin-top:1rem" href="https://yandex.ru/maps/org/198941502421/" target="_blank" rel="noopener">Открыть на Яндекс Картах</a>
-          </div>
+          <iframe src="https://yandex.ru/map-widget/v1/?oid=198941502421&amp;ol=biz&amp;ll=50.109408%2C53.196302&amp;z=17"
+                  title="Бьюти завод на Яндекс Картах" loading="lazy" allowfullscreen></iframe>
         </div>
         <div class="rows">
           <div class="row"><span class="k">Адрес</span><span class="v">Самара, Вилоновская ул., 44<small>Парковка, Wi-Fi, оплата картой, можно с собакой</small></span></div>
@@ -847,6 +859,59 @@ $('chapters').addEventListener('click', e => {
   const a = e.target.closest('[data-go]'); if (!a) return;
   select(+a.dataset.go);
 });
+
+/* Отзывы с их карточки на Яндекс Картах, сокращены. Имена мастеров как в оригинале. */
+const REVIEWS = [
+  ['Елена Журавлева','18 июня 2025','Все пять направлений',
+   'Регулярно посещаю этот салон. Стрижка, окрашивание, маникюр, педикюр, лазерная эпиляция, различные виды массажа: все процедуры только на пятёрку. И цены демократичные. Рекомендую.'],
+  ['KaterinG','6 декабря 2025','Педикюр, мастер Юлия Баканова',
+   'Первое, что бросилось в глаза, это много места в салоне, воздуха, всё классно оформлено. Очень милая девочка администратор, предложила напитки на выбор. Понравилось всё очень. 10 из 10 салон, обязательно буду заглядывать.'],
+  ['Татьяна Богачёва','17 июня 2025','Мастер Яна',
+   'Чувствуешь себя королевой, заходя сюда. Просторно, приятно, комфортно. Спасибо большое за это пространство! Мастер Яна выше всех похвал.'],
+  ['Света Кобальт','9 ноября 2025','Лимфодренажный массаж',
+   'Меня подвели в спа-салоне, куда я была записана. На глаза попался Бьюти завод, где я смогла записаться на массаж в ближайшие полчаса. Очень благодарна администратору: дружелюбна, принесла кофе и воду с лимоном. Мастер всё рассказала, интересовалась самочувствием, настоящий профессионал.'],
+  ['Fairy with yellow eyes','17 июля 2025','Лазерная эпиляция, Елена Буйницкая',
+   'Мастер лазерной эпиляции Елена Буйницкая мой любимый специалист. С момента первого посещения выбираю только её. Невероятно спокойный, добрый и светлый человек, процедуру проводит тщательно, заботливо и аккуратно.'],
+  ['Ксения Христофорова','29 января 2025','Ламинирование ресниц, мастер Софья',
+   'Мастер Софья была очень внимательна ко всем пожеланиям и подробно объяснила каждый этап процедуры. Ресницы после выглядят просто шикарно: длинные, густые.'],
+  ['Дарья Т.','4 марта','Стрижка, Светлана Гонашилина',
+   'Огромное спасибо мастеру Светлане Гонашилиной, подобрала идеальную стрижку, я в восторге. В салоне приятная администратор, предложила напитки, а после ещё и хорошие слова пожелали. Кто думает, записываться сюда или нет: не думайте, записывайтесь.'],
+  ['Татьяна Майорова','1 октября 2025','Женская стрижка, мастер Наталья',
+   'Всё очень чисто и аккуратно, предложили кофе и воду. Пока поднимаешься в салон, на лестнице милые осенние декорации. Очень понравилось, что можно записаться онлайн. Большое количество процедур, мастер профессионал своего дела.'],
+  ['Лика А.','22 августа 2024','Контуринг и стрижка, мастер Яна',
+   'Всё на высшем уровне, быстро и качественно, а у меня густые длинные волосы. В студии очень комфортно, светло и уютно, в том числе благодаря сервису: напитки, улыбки и просто позитивное настроение. Хочется возвращаться.'],
+  ['M M','9 октября 2024','Маникюр',
+   'Красивый салон, приветливые администраторы и мастера, сделали маникюр быстро и аккуратно. Также есть барная карта, угостили вкусным кофе с конфетами.']
+];
+
+/* Доли положительных отзывов по темам, как их считает Яндекс */
+const TOPICS = [
+  ['Атмосфера',100,41], ['Стрижка',100,24], ['Интерьер',100,18],
+  ['Депиляция',100,14], ['Эпиляция',100,12], ['Чистота',100,10],
+  ['Компетентность',98,46], ['Персонал',97,122]
+];
+
+/* Кого гости зовут по имени — прямо из отзывов */
+const MASTERS = [
+  ['Яна','стрижка и контуринг'], ['Наталья','женская стрижка'],
+  ['Светлана Гонашилина','стрижка'], ['Виктория','окрашивание'],
+  ['Юлия Баканова','педикюр'], ['Елена Буйницкая','лазерная эпиляция'],
+  ['Софья','ресницы'], ['Анна Храмова','маникюр'], ['Полина','брови']
+];
+
+$('topics').innerHTML = TOPICS.map(([n, p, c]) =>
+  `<span class="topic">${esc(n)} <b>${p}%</b></span>`).join('');
+
+$('wall').innerHTML = REVIEWS.map(([who, when, svc, text]) => `
+  <article class="rev">
+    <span class="q" aria-hidden="true">“</span>
+    <span class="svc">${esc(svc)}</span>
+    <p>${esc(text)}</p>
+    <div class="who"><b>${esc(who)}</b><span>${esc(when)}</span></div>
+  </article>`).join('');
+
+$('masters').innerHTML = MASTERS.map(([n, s2]) =>
+  `<span class="master"><b>${esc(n)}</b> · ${esc(s2)}</span>`).join('');
 
 $('promos').innerHTML = PROMOS.map(([name, price, desc]) =>
   `<div class="promo tilt" data-tilt data-depth="9"><b>${esc(name)}</b><span class="pr">${rub(price)}</span>${desc ? `<span>${esc(desc)}</span>` : ''}</div>`).join('');

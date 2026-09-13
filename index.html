@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Бьюти завод — студия красоты на Вилоновской, 44 в Самаре. Волосы, ногти, брови и ресницы, косметология, массаж и депиляция под одной крышей.">
+<meta name="color-scheme" content="light">
+<title>Бьюти завод — студия красоты в Самаре</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Forum&family=IBM+Plex+Sans:wght@300;400;500;600&family=Marck+Script&display=swap">
+<style>
+/* Цвета с их собственных вещей: монограмма BZ в группе ВК цвета глины, поверх неё
+   чёрный рукописный «Beauty Zavod»; на фасаде терракотовые оконные рамы и чёрная
+   вывеска, внутри белые стены и терракотовая штора у моек. Мир один, дневной. */
+:root{
+  --milk:#faf6f2;
+  --milk-2:#f2ebe5;
+  --clay:#b3634c;        /* терракота фасадных рам */
+  --clay-deep:#8e4b38;
+  --clay-soft:#c89083;   /* пыльная глина монограммы */
+  --graphite:#221e1c;
+  --warm:#8a7d76;
+  --warm-dim:#a89c95;
+  --line:rgba(34,30,28,.14);
+  --line-soft:rgba(34,30,28,.07);
+
+  --f-display:'Forum',Georgia,serif;
+  --f-body:'IBM Plex Sans','Helvetica Neue',system-ui,sans-serif;
+  --f-script:'Marck Script',cursive;
+
+  --wrap:1160px;
+  --pad:clamp(1rem,4vw,2.2rem);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--milk);color:var(--graphite);
+  font-family:var(--f-body);font-weight:400;font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+img{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--clay);outline-offset:3px}
+.wrap{width:100%;max-width:var(--wrap);margin:0 auto;padding-inline:var(--pad)}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;margin:0;line-height:1.15;text-wrap:balance}
+p{margin:0}
+
+/* ── Знак: монограмма глиной, поверх чёрный курсив, как у них ── */
+/* Рукописная часть шире монограммы, поэтому знаку нужна своя ширина,
+   иначе курсив вылезает за край шапки и обрезается. */
+.mark{position:relative;display:inline-grid;place-items:center;min-width:4.9em;text-decoration:none;line-height:1;padding-block:.15em}
+.mark .bz{font-family:var(--f-display);color:var(--clay-soft);font-size:1em;letter-spacing:.02em}
+.mark .nm{font-family:var(--f-script);color:var(--graphite);font-size:.5em;
+  position:absolute;left:50%;top:54%;translate:-50% -50%;white-space:nowrap}
+.mark .sub{display:block;font-family:var(--f-body);font-size:.16em;letter-spacing:.42em;
+  color:var(--warm);text-transform:uppercase;text-align:center;margin-top:.25em}
+
+/* ── Шапка ── */
+.top{position:sticky;top:0;z-index:40;background:rgba(250,246,242,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft)}
+.top-in{display:flex;align-items:center;gap:.8rem;min-height:62px;padding-block:.5rem}
+.top .mark{font-size:30px}
+.demo-tag{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--warm-dim);border:1px solid var(--line);border-radius:999px;padding:.25em .6em;white-space:nowrap}
+.top .sp{margin-left:auto}
+.tel{font-size:14px;font-weight:500;text-decoration:none;white-space:nowrap}
+.tel:hover{color:var(--clay)}
+@media(max-width:880px){.demo-tag{display:none}}
+@media(max-width:560px){.top .mark{font-size:24px}.tel{display:none}}
+
+.btn{font-family:var(--f-body);font-weight:500;font-size:14px;text-decoration:none;cursor:pointer;
+  padding:.85em 1.5em;border:1px solid transparent;display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  transition:transform .14s,background-color .2s,border-color .2s,color .2s}
+.btn:active{transform:translateY(1px)}
+.btn-c{background:var(--clay);color:#fff}
+.btn-c:hover{background:var(--clay-deep)}
+.btn-o{border-color:var(--line);color:var(--graphite)}
+.btn-o:hover{border-color:var(--clay);color:var(--clay)}
+.btn-sm{padding:.6em 1.1em;font-size:12.5px}
+
+/* ── Первый экран ── */
+.hero{border-bottom:1px solid var(--line-soft)}
+.hero-in{display:grid;grid-template-columns:1fr;gap:1.5rem;padding-block:clamp(1.6rem,5vw,3.2rem)}
+@media(min-width:900px){.hero-in{grid-template-columns:1.05fr .95fr;gap:clamp(1.6rem,4vw,3rem);align-items:center}}
+.hero h1{font-size:clamp(1.8rem,5.4vw,3rem);max-width:15ch}
+.hero h1 em{font-style:normal;color:var(--clay)}
+.hero .lead{margin-top:1rem;max-width:46ch;color:var(--warm);font-size:clamp(.95rem,2.6vw,1.05rem)}
+.hero-cta{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.4rem}
+.hero-ph{position:relative;overflow:hidden}
+.hero-ph img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.stats{display:flex;flex-wrap:wrap;gap:.6rem 1.8rem;margin-top:1.8rem;padding-top:1.2rem;border-top:1px solid var(--line-soft)}
+.stat{display:flex;align-items:baseline;gap:.45rem}
+.stat b{font-family:var(--f-display);font-size:1.5rem;color:var(--clay);font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--warm-dim);max-width:16ch;line-height:1.35}
+
+/* ── Цеха ── */
+section.blk{padding-block:clamp(2.2rem,5.5vw,4rem)}
+.blk-h{margin-bottom:1.5rem}
+.blk-h h2{font-size:clamp(1.4rem,4.4vw,2.1rem)}
+.blk-h p{font-size:13.5px;color:var(--warm-dim);max-width:48ch;margin-top:.5rem}
+
+.shops{display:grid;grid-template-columns:1fr;gap:.5rem}
+@media(min-width:520px){.shops{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.shops{grid-template-columns:repeat(5,1fr)}}
+.shop{width:100%;text-align:left;cursor:pointer;font:inherit;color:inherit;
+  background:var(--milk-2);border:1px solid transparent;padding:1rem;
+  display:flex;flex-direction:column;gap:.2rem;transition:background-color .2s,border-color .2s,transform .14s}
+.shop:hover{border-color:var(--clay-soft);transform:translateY(-2px)}
+.shop b{font-family:var(--f-display);font-size:1.15rem;font-weight:400}
+.shop span{font-size:11.5px;color:var(--warm-dim)}
+.shop em{font-style:normal;font-size:12.5px;color:var(--clay);font-variant-numeric:tabular-nums;margin-top:.3rem}
+.shop[aria-pressed="true"]{background:var(--clay);border-color:var(--clay);color:#fff}
+.shop[aria-pressed="true"] span,.shop[aria-pressed="true"] em{color:rgba(255,255,255,.82)}
+
+/* ── Прайс ── */
+.groups{margin-top:1.8rem}
+.grp{margin-bottom:1.8rem}
+.grp:last-child{margin-bottom:0}
+.grp-h{display:flex;align-items:baseline;gap:.7rem;padding-bottom:.5rem;border-bottom:1px solid var(--clay-soft);margin-bottom:.2rem}
+.grp-h h3{font-size:clamp(1.05rem,3.2vw,1.3rem)}
+.grp-h span{font-size:11.5px;color:var(--warm-dim);margin-left:auto;white-space:nowrap}
+.item{padding:.8rem 0;border-bottom:1px solid var(--line-soft)}
+.item-top{display:flex;align-items:baseline;gap:.6rem}
+.item h4{font-family:var(--f-body);font-weight:500;font-size:14.5px;line-height:1.35;flex:1;min-width:0;margin:0}
+.item .pr{font-family:var(--f-display);font-size:1.05rem;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--clay)}
+.item .d{font-size:12.5px;line-height:1.5;color:var(--warm-dim);margin-top:.25rem;max-width:62ch}
+.price-note{margin-top:1.3rem;font-size:12.5px;color:var(--warm-dim);max-width:60ch}
+
+/* ── Акции ── */
+.promos{display:grid;grid-template-columns:1fr;gap:.5rem}
+@media(min-width:640px){.promos{grid-template-columns:1fr 1fr}}
+.promo{border:1px solid var(--clay-soft);padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.25rem}
+.promo b{font-family:var(--f-body);font-weight:500;font-size:14.5px}
+.promo .pr{font-family:var(--f-display);font-size:1.3rem;color:var(--clay)}
+.promo span{font-size:12.5px;color:var(--warm-dim);line-height:1.5}
+
+/* ── Галерея ── */
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:.5rem}
+.gal figure{margin:0;position:relative;overflow:hidden}
+.gal img{width:100%;aspect-ratio:1;object-fit:cover;transition:transform .5s}
+.gal figure:hover img{transform:scale(1.05)}
+.gal figcaption{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(transparent,rgba(34,30,28,.78));
+  color:#fff;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:1.4em .6em .5em}
+@media(min-width:700px){.gal{grid-template-columns:repeat(auto-fill,minmax(165px,1fr))}}
+
+/* ── Отзывы ── */
+.revs{display:grid;grid-template-columns:1fr;gap:.7rem}
+@media(min-width:760px){.revs{grid-template-columns:1fr 1fr}}
+.rev{background:var(--milk-2);padding:1.2rem;display:flex;flex-direction:column;gap:.7rem;border-left:2px solid var(--clay)}
+.rev p{font-size:13.5px;line-height:1.65;color:var(--graphite)}
+.rev .who{display:flex;justify-content:space-between;gap:.8rem;align-items:baseline;font-size:11.5px;color:var(--warm-dim);margin-top:auto}
+.rev .who b{font-weight:500;color:var(--graphite);font-size:12.5px}
+
+/* ── Контакты ── */
+.where{display:grid;grid-template-columns:1fr;gap:1.3rem}
+@media(min-width:860px){.where{grid-template-columns:1fr 1fr;gap:clamp(1.4rem,4vw,2.6rem)}}
+.map{border:1px solid var(--line);background:
+  repeating-linear-gradient(90deg,transparent 0 34px,rgba(34,30,28,.045) 34px 35px),
+  repeating-linear-gradient(0deg,transparent 0 34px,rgba(34,30,28,.045) 34px 35px),
+  var(--milk-2);
+  min-height:240px;display:grid;place-items:center;padding:1.4rem;text-align:center}
+.map .pin{width:13px;height:13px;border-radius:50%;background:var(--clay);box-shadow:0 0 0 6px rgba(179,99,76,.16);margin:0 auto .8rem}
+.map .t{font-family:var(--f-display);font-size:1.1rem}
+.map .s{font-size:12px;color:var(--warm-dim);margin-top:.4rem}
+.rows{display:flex;flex-direction:column}
+.row{display:grid;grid-template-columns:1fr;gap:.15rem;padding:.8rem 0;border-bottom:1px solid var(--line-soft)}
+@media(min-width:420px){.row{grid-template-columns:92px 1fr;gap:1rem;align-items:baseline}}
+.row .k{font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--warm-dim)}
+.row .v{font-size:15px;line-height:1.45}
+.row .v small{display:block;font-size:12.5px;color:var(--warm-dim);margin-top:.2rem}
+.row .v a{text-decoration:none;font-weight:500}
+.row .v a:hover{color:var(--clay)}
+.chans{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.2rem}
+.chan{font-size:12.5px;border:1px solid var(--line);padding:.45em .9em;text-decoration:none;transition:border-color .2s,color .2s}
+.chan:hover{border-color:var(--clay);color:var(--clay)}
+
+/* ── Форма ── */
+#zapis{background:var(--milk-2);border-top:1px solid var(--line-soft)}
+.form{display:flex;flex-direction:column;gap:.8rem;max-width:440px}
+.f-row{display:flex;flex-direction:column;gap:.3rem}
+.f-row label{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--warm-dim)}
+.f-row input{font-family:var(--f-body);font-size:15px;color:var(--graphite);background:var(--milk);
+  border:1px solid var(--line);padding:.75em .9em}
+.f-row input:focus{border-color:var(--clay);outline:none}
+.err{font-size:12px;color:#b3352a}
+.done{border:1px solid var(--clay);padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.4rem;background:var(--milk)}
+.done b{font-family:var(--f-display);font-size:1.05rem;color:var(--clay)}
+.done p{font-size:13px;color:var(--warm);line-height:1.55}
+.done a{color:var(--clay);font-weight:500}
+
+footer{padding-block:2rem;color:var(--warm-dim);border-top:1px solid var(--line-soft)}
+.foot{display:flex;flex-direction:column;gap:1.2rem}
+@media(min-width:700px){.foot{flex-direction:row;justify-content:space-between;align-items:flex-end}}
+.foot-note{font-size:11.5px;line-height:1.6;max-width:56ch}
+.foot-note a{color:var(--graphite);text-decoration:underline;text-underline-offset:3px}
+.foot-note a:hover{color:var(--clay)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a href="#top" class="mark"><span class="bz">BZ</span><span class="nm">Beauty Zavod</span></a>
+    <span class="demo-tag">демо-макет</span>
+    <span class="sp"></span>
+    <a class="tel" href="tel:+79639128229">+7 963 912-82-29</a>
+    <a class="btn btn-c btn-sm" href="#zapis">Записаться</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap hero-in">
+      <div>
+        <h1>Пять цехов красоты <em>под одной крышей</em></h1>
+        <p class="lead">Волосы, ногти, брови и ресницы, косметология, массаж и депиляция. В центре Самары, на Вилоновской, 44. Работаем на Davines, Lebel и L’Oréal.</p>
+        <div class="hero-cta">
+          <a class="btn btn-c" href="#zapis">Записаться</a>
+          <a class="btn btn-o" href="#price">Смотреть цены</a>
+        </div>
+        <div class="stats">
+          <div class="stat"><b>4,9</b><span>215 оценок на Яндекс Картах</span></div>
+          <div class="stat"><b>138</b><span>отзывов</span></div>
+          <div class="stat"><b>148 м</b><span>от остановки «Вилоновская»</span></div>
+        </div>
+      </div>
+      <div class="hero-ph"><img src="img/hero.jpg" alt="Фасад студии Бьюти завод с вывеской и терракотовыми рамами" fetchpriority="high"></div>
+    </div>
+  </section>
+
+  <section class="blk" id="price">
+    <div class="wrap">
+      <div class="blk-h">
+        <h2>Цены по цехам</h2>
+        <p>Салонов, где стригут и делают ногти, в городе много. Здесь под одной крышей ещё и косметология, массаж, EMS и депиляция. Выберите цех, чтобы не листать чужое.</p>
+      </div>
+      <div class="shops" id="shops"></div>
+      <div class="groups" id="groups"></div>
+      <p class="price-note">Цены из их онлайн-записи, той же, что показывает Яндекс. У окрашивания и ухода стоимость зависит от длины и густоты волос, салон предупреждает об этом сам.</p>
+    </div>
+  </section>
+
+  <section class="blk" style="background:var(--milk-2)">
+    <div class="wrap">
+      <div class="blk-h">
+        <h2>Акции</h2>
+        <p>Действующие предложения из их прайса.</p>
+      </div>
+      <div class="promos" id="promos"></div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="wrap">
+      <div class="blk-h">
+        <h2>Работы и студия</h2>
+        <p>Фотографии с их карточки. Лица гостей мы не показываем.</p>
+      </div>
+      <div class="gal">
+        <figure><img src="img/nails-1.jpg" alt="Маникюр с дизайном" loading="lazy"><figcaption>Ногти</figcaption></figure>
+        <figure><img src="img/hair-1.jpg" alt="Гладкое окрашивание" loading="lazy"><figcaption>Волосы</figcaption></figure>
+        <figure><img src="img/nails-2.jpg" alt="Нежный маникюр" loading="lazy"><figcaption>Ногти</figcaption></figure>
+        <figure><img src="img/int-wash.jpg" alt="Парикмахерские мойки" loading="lazy"><figcaption>Мойки</figcaption></figure>
+        <figure><img src="img/nails-3.jpg" alt="Маникюр нюд" loading="lazy"><figcaption>Ногти</figcaption></figure>
+        <figure><img src="img/hair-2.jpg" alt="Причёска с украшением" loading="lazy"><figcaption>Причёска</figcaption></figure>
+        <figure><img src="img/int-desk.jpg" alt="Маникюрный стол у окна" loading="lazy"><figcaption>Зал</figcaption></figure>
+        <figure><img src="img/nails-4.jpg" alt="Тёмный маникюр" loading="lazy"><figcaption>Ногти</figcaption></figure>
+        <figure><img src="img/care.jpg" alt="Профессиональный шампунь Davines" loading="lazy"><figcaption>Davines</figcaption></figure>
+        <figure><img src="img/wax.jpg" alt="Восковая депиляция" loading="lazy"><figcaption>Депиляция</figcaption></figure>
+        <figure><img src="img/int-polish.jpg" alt="Стеллаж с гель-лаками" loading="lazy"><figcaption>Палитра</figcaption></figure>
+        <figure><img src="img/facade.jpg" alt="Вход в студию" loading="lazy"><figcaption>Вход</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk" style="background:var(--milk-2)">
+    <div class="wrap">
+      <div class="blk-h">
+        <h2>Отзывы</h2>
+        <p>Два из 138 на Яндекс Картах, сокращены.</p>
+      </div>
+      <div class="revs">
+        <article class="rev">
+          <p>Меня подвели в спа-салоне, куда я была записана. На глаза попался Бьюти завод, где я смогла записаться на лимфодренажный массаж в ближайшие полчаса. Очень благодарна администратору: дружелюбна, принесла кофе и воду с лимоном. Мастер всё рассказала, интересовалась самочувствием во время массажа, настоящий профессионал.</p>
+          <div class="who"><b>Света Кобальт</b><span>8 ноября 2025</span></div>
+        </article>
+        <article class="rev">
+          <p>Отличный салон, прекрасная администратор и мастер Наталья. Всё очень чисто и аккуратно, предложили кофе и воду. Пока поднимаешься в салон, на лестнице милые осенние декорации. Очень понравилось, что можно записаться онлайн. Большое количество процедур, мастер профессионал своего дела.</p>
+          <div class="who"><b>Татьяна Майорова</b><span>1 октября 2025</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk">
+    <div class="wrap">
+      <div class="blk-h">
+        <h2>Как доехать</h2>
+        <p>Центр Самары, Ленинский район. Остановка «Вилоновская улица» в 148 метрах, есть парковка.</p>
+      </div>
+      <div class="where">
+        <div class="map">
+          <div>
+            <span class="pin"></span>
+            <div class="t">Самара, Вилоновская ул., 44</div>
+            <div class="s">Здесь будет живая карта. В макете она заглушка,<br>чтобы страница открывалась мгновенно.</div>
+            <a class="btn btn-o btn-sm" style="margin-top:1rem" href="https://yandex.ru/maps/org/198941502421/" target="_blank" rel="noopener">Открыть на Яндекс Картах</a>
+          </div>
+        </div>
+        <div class="rows">
+          <div class="row"><span class="k">Адрес</span><span class="v">Самара, Вилоновская ул., 44<small>Парковка, Wi-Fi, оплата картой, можно с собакой</small></span></div>
+          <div class="row"><span class="k">Часы</span><span class="v">Сегодня до 20:00<small>Полный график уточняйте по телефону</small></span></div>
+          <div class="row"><span class="k">Телефон</span><span class="v"><a href="tel:+79639128229">+7 963 912-82-29</a><small>Администратор — Ульяна</small></span></div>
+          <div class="row"><span class="k">Написать</span><span class="v">
+            <span class="chans">
+              <a class="chan" href="https://t.me/79639128229" target="_blank" rel="noopener">Телеграм</a>
+              <a class="chan" href="https://wa.me/79639128229" target="_blank" rel="noopener">WhatsApp</a>
+              <a class="chan" href="https://vk.ru/beautyzavod" target="_blank" rel="noopener">ВКонтакте</a>
+            </span>
+          </span></div>
+          <div class="row" style="border-bottom:none"><span class="k">Онлайн</span><span class="v">
+            <a href="https://b359063.yclients.com" target="_blank" rel="noopener">Запись через YCLIENTS</a>
+            <small>Тот же календарь, что и в карточке на Картах</small>
+          </span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk" id="zapis">
+    <div class="wrap">
+      <div class="blk-h">
+        <h2>Оставить заявку</h2>
+        <p>Имя и телефон — администратор перезвонит и подберёт мастера и время.</p>
+      </div>
+      <form class="form" id="form" novalidate>
+        <div class="f-row">
+          <label for="name">Как вас зовут</label>
+          <input id="name" type="text" autocomplete="name" placeholder="Имя">
+        </div>
+        <div class="f-row">
+          <label for="phone">Телефон</label>
+          <input id="phone" type="tel" autocomplete="tel" placeholder="+7 ___ ___-__-__">
+          <span class="err" id="err" hidden>Оставьте номер, иначе администратору некуда перезвонить.</span>
+        </div>
+        <button class="btn btn-c" type="submit" style="align-self:flex-start">Отправить</button>
+        <div class="done" id="done" hidden></div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <span class="mark" style="font-size:26px"><span class="bz">BZ</span><span class="nm">Beauty Zavod</span></span>
+      <p class="foot-note" style="margin-top:.8rem">Самара, Вилоновская ул., 44 · до 20:00 · +7 963 912-82-29</p>
+    </div>
+    <p class="foot-note">
+      Демо-макет. Фотографии, цены, отзывы и оценки взяты с карточки заведения на Яндекс Картах и из группы во ВКонтакте.<br>
+      Разработка — студия <a href="https://lendvis.ru" target="_blank" rel="noopener">Лендвис</a>, lendvis.ru
+    </p>
+  </div>
+</footer>
+
+<script>
+/* Прайс из их онлайн-записи. Разделы собраны в пять цехов — так их
+   тринадцать категорий перестают быть простынёй. [название, цена, состав] */
+const SHOPS = [
+  { key:'hair', name:'Волосы', note:'стрижка, укладка, цвет, уход', groups:{
+    "Стрижка": [
+      ["Стрижка женская", 2500, "Мытьё головы, базовый уход по типу волос, стрижка и повседневная укладка"],
+      ["Стрижка женская, короткие", 2500, ""],
+      ["Стрижка женская, средние", 3200, ""],
+      ["Стрижка женская, удлинённые", 3700, ""],
+      ["Стрижка женская у топ-стилиста", 3000, "Мытьё головы, базовый уход, стрижка и повседневная укладка"],
+      ["Стрижка мужская", 2500, "Мытьё головы, базовый уход, стрижка"],
+      ["Стрижка кончиков", 1500, ""]
+    ],
+    "Укладка": [
+      ["Укладка повседневная", 2500, "Профессиональное мытьё головы, бережная сушка и укладка на брашинг"],
+      ["Локоны", 2500, ""]
+    ],
+    "Окрашивание": [
+      ["Сложное окрашивание, экстремальная длина", 30000, "Стоимость по запросу"],
+      ["Сложное окрашивание, длинные", 16500, ""],
+      ["Сложное окрашивание, удлинённые", 13500, ""],
+      ["Сложное окрашивание, средние", 9500, ""],
+      ["Сложное окрашивание, короткие", 7500, ""],
+      ["Тонирование, экстремально длинные", 10500, "Стоимость по запросу"],
+      ["Окрашивание однотонное, экстремальная длина", 10000, "Цена по запросу"],
+      ["Окрашивание корней и тонирование, длинные", 9500, ""],
+      ["Окрашивание корней и тонирование, удлинённые", 8500, ""],
+      ["Окрашивание корней и тонирование, средние", 7500, ""],
+      ["Окрашивание корней и тонирование, короткие", 5500, ""],
+      ["Окрашивание однотонное, длинные", 7500, ""],
+      ["Окрашивание однотонное, удлинённые", 6500, ""],
+      ["Окрашивание однотонное, средние", 5500, ""],
+      ["Окрашивание однотонное, короткие", 4500, ""],
+      ["Спец. блонд, осветление краской", 7500, "Корни до 1 см и тонирование"],
+      ["Тонирование, длинные", 7500, ""],
+      ["Тонирование, удлинённые", 6500, ""],
+      ["Тонирование, средние", 4500, ""],
+      ["Тонирование, короткие", 3700, ""],
+      ["Окрашивание контуринг", 5500, ""]
+    ],
+    "Уход за волосами": [
+      ["Коллагеновое восстановление волос", 7000, "Глубокое питание и восстановление структуры коллагеном, который заполняет пустоты в волокнах"],
+      ["Lebel, Абсолютное счастье, экстремально длинные", 7000, ""],
+      ["Lebel, Абсолютное счастье, длинные", 6000, ""],
+      ["Lebel, Абсолютное счастье, средние", 5000, ""],
+      ["Lebel, Блеск и сила, экстремально длинные", 6000, ""],
+      ["Lebel, Блеск и сила, длинные", 5000, ""],
+      ["Lebel, Блеск и сила, средние", 4000, ""],
+      ["Lebel, Блеск и сила, короткие", 3000, ""],
+      ["Lebel, Жизненная сила, экстремально длинные", 5000, ""],
+      ["Lebel, Жизненная сила, длинные", 4000, ""],
+      ["Lebel, Жизненная сила, средние", 3000, ""],
+      ["Lebel, Жизненная сила, короткие", 2000, ""],
+      ["Интенсивное коллагеновое восстановление, длинные", 5500, ""],
+      ["Интенсивное коллагеновое восстановление, средние", 4500, ""],
+      ["Интенсивное коллагеновое восстановление, короткие", 3500, ""],
+      ["Уход Oi Davines для блеска", 3000, ""],
+      ["Уход Absolute Repair L’Oréal для повреждённых волос", 2600, ""],
+      ["Пилинг кожи головы Lebel и массаж головы", 1800, ""],
+      ["Мгновенное восстановление любых типов волос", 700, "Безопасно в том числе детям и беременным"]
+    ]
+  }},
+  { key:'nails', name:'Ногти', note:'маникюр и педикюр у топ-мастера', groups:{
+    "Маникюр, топ-мастер": [
+      ["Маникюр с гель-лаком, френч или лунный", 3100, ""],
+      ["Маникюр с гель-лаком, однотонное", 2600, ""],
+      ["Эко-покрытие P.Shine для натуральных ногтей", 2200, "Японский маникюр: здоровый розовый цвет и естественный блеск без наращивания"],
+      ["Маникюр с покрытием лак", 2000, ""],
+      ["Маникюр без покрытия", 1800, ""],
+      ["Маникюр мужской", 1800, ""],
+      ["Маникюр детский, 7–12 лет", 1200, "Опил, придание формы, покрытие лак, необрезной"],
+      ["Парафинотерапия горячая", 800, "Увлажнение и питание кожи, разглаживание трещинок и заусениц"],
+      ["Парафинотерапия холодная", 700, ""],
+      ["Комбо дизайн, от 4 до 10 ногтей", 700, ""],
+      ["Снятие наращенных ногтей, геля", 800, ""],
+      ["Снятие гель-лака без последующего покрытия", 500, ""],
+      ["Ремонт ногтя гелем", 500, ""],
+      ["Укрепление ногтей акриловой пудрой", 400, ""],
+      ["Снятие гель-лака", 300, ""],
+      ["Дизайн, 1 ноготь", 100, ""],
+      ["Ремонт ногтя", 100, ""]
+    ],
+    "Педикюр, топ-мастер": [
+      ["Педикюр аппаратный полный с гель-лаком", 3100, "Полная обработка стопы, пяток, пальчиков, форма, масло, массаж, снятие покрытия"],
+      ["Педикюр мужской", 2800, ""],
+      ["Педикюр аппаратный пальчики с гель-лаком", 2700, ""],
+      ["Педикюр аппаратный полный без покрытия", 2500, ""],
+      ["Педикюр аппаратный пальчики без покрытия", 2000, ""]
+    ]
+  }},
+  { key:'eyes', name:'Взгляд', note:'брови и ресницы', groups:{
+    "Брови": [
+      ["Комбо: укладка, коррекция, окрашивание и счастье для бровей", 2300, ""],
+      ["Долговременная укладка с коррекцией и окрашиванием", 2000, ""],
+      ["Комбо: коррекция и окрашивание плюс счастье для бровей", 1800, ""],
+      ["Коррекция и окрашивание бровей, хна или краска", 1500, ""],
+      ["Окрашивание бровей без коррекции", 1000, ""],
+      ["Мужская коррекция бровей", 1000, ""],
+      ["Коррекция бровей без окрашивания", 900, ""],
+      ["Счастье для бровей", 500, ""],
+      ["Депиляция воском, зона лица", 500, ""]
+    ],
+    "Ресницы": [
+      ["Наращивание, объём 4D", 4100, ""],
+      ["Наращивание, объём 3D", 3000, ""],
+      ["Наращивание, объём 2,5D", 2800, ""],
+      ["Наращивание, объём 2D", 2600, ""],
+      ["Наращивание, объём 1,5D", 2500, ""],
+      ["Наращивание, классический объём", 2400, ""],
+      ["Ламинирование ресниц", 2000, ""],
+      ["Коррекция наращивания", 1900, ""],
+      ["Наращивание уголки", 1900, ""],
+      ["Окрашивание ресниц", 900, ""],
+      ["Наращивание нижних ресниц", 900, ""],
+      ["Эффект лучи", 900, ""],
+      ["Наращивание LED", 500, ""],
+      ["Мокрый эффект, от 2D", 400, ""]
+    ]
+  }},
+  { key:'face', name:'Лицо', note:'косметология и макияж', groups:{
+    "Косметология": [
+      ["Микронидлинг с экзосомами", 6000, ""],
+      ["Чистка спины", 5000, ""],
+      ["Микронидлинг, безинъекционная мезотерапия: лицо, шея, декольте", 5000, ""],
+      ["Пилинг Me Line", 5000, ""],
+      ["Уходовые процедуры", 4800, "Подбираются индивидуально по состоянию кожи"],
+      ["Карбокситерапия", 4000, ""],
+      ["Комбинированная чистка лица", 4000, ""],
+      ["Пилинг BioRePeel", 4000, ""],
+      ["Пилинг Exos Peel с экзосомами", 4000, ""],
+      ["Пилинг PeachPeel", 4000, ""],
+      ["Пилинг PRX T33", 3800, ""],
+      ["Пилинг TC DUO Peel, барби", 2500, ""],
+      ["Всесезонные пилинги", 2000, ""]
+    ],
+    "Макияж": [
+      ["Макияж свадебный", 3500, ""],
+      ["Лифтинг-макияж", 2600, ""],
+      ["Смоки в клиентской технике", 2600, ""],
+      ["Вечерний макияж со стрелками", 2600, ""],
+      ["Макияж дневной", 2600, ""],
+      ["Макияж без макияжа", 2000, "No make up makeup"]
+    ]
+  }},
+  { key:'body', name:'Тело', note:'массаж, аппараты, депиляция', groups:{
+    "Массаж": [
+      ["Классический массаж, 90 минут", 6000, "Расслабление мышц, снятие напряжения, улучшение кровообращения"],
+      ["Авторский массаж лица", 4000, "Комбинация методик ручного воздействия против морщин, отёчности и неровностей кожи"],
+      ["Классический массаж, 60 минут", 3000, ""],
+      ["Лимфодренажный массаж", 3000, "Снимает отёчность, улучшает лимфоотток и общее состояние"],
+      ["Массаж с аромамаслами", 3000, "Микс восточных и европейских техник, массаж всего тела и головы"],
+      ["Релакс-массаж", 3000, ""],
+      ["Скульптурирующий массаж лица", 3000, ""],
+      ["Антицеллюлитный массаж", 2800, "Улучшает кровообращение и лимфоток, уменьшает отёки"],
+      ["Массаж спины", 2500, ""],
+      ["Детский массаж", 2000, "Для детей от 5 до 12 лет"],
+      ["Тайский массаж ног", 2000, ""]
+    ],
+    "Аппаратные программы": [
+      ["Массаж «Сфера», сеанс 1 час 15 минут", 3000, "Их авторская программа против отёков и неровностей фигуры"],
+      ["Сеанс EMS, 30 минут, 1 зона", 1990, "Электромиостимуляция для моделирования фигуры"],
+      ["LPG-массаж, сеанс 45 минут", 1800, "Уменьшение целлюлита, подтянутая кожа, улучшение кровообращения"],
+      ["Массаж лица и зоны декольте «Сфера»", 1000, ""]
+    ],
+    "Депиляция женская, воск": [
+      ["Комбо максимум: ноги полностью, глубокое бикини, подмышки", 3900, ""],
+      ["Комбо: голени, глубокое бикини, подмышки", 3400, ""],
+      ["Ноги полностью", 2100, ""],
+      ["Бикини глубокое", 2000, ""],
+      ["Руки полимерным воском", 1900, ""],
+      ["Бедра", 1600, ""],
+      ["Бикини классика", 1600, ""],
+      ["Голени", 1500, ""],
+      ["Руки", 1500, ""],
+      ["Бикини, губы", 1000, ""],
+      ["Живот полностью", 1000, ""],
+      ["Поясница", 1000, ""],
+      ["Ягодицы", 1000, ""],
+      ["Подмышки", 900, ""],
+      ["Живот, дорожка", 600, ""]
+    ],
+    "Депиляция мужская, воск": [
+      ["Спина и плечи", 2600, ""],
+      ["Грудь", 2400, ""],
+      ["Подмышки", 1200, ""],
+      ["Лицо: уши и нос", 1000, ""]
+    ]
+  }}
+];
+
+const PROMOS = [
+  ["Счастливое окрашивание, длинные волосы", 10000, "Однотонное окрашивание плюс комплекс счастья для волос"],
+  ["Счастливое окрашивание, средняя длина", 7500, "Однотонное окрашивание плюс комплекс счастья для волос"],
+  ["Счастливое окрашивание, короткие волосы", 5500, "Однотонное окрашивание плюс комплекс счастья для волос"],
+  ["Ламинирование ресниц и оформление бровей", 3000, "Минус 20 процентов: распахнутый взгляд без туши и наращивания"],
+  ["Стрижка, уход в подарок при первом посещении", 3000, "Консультация по стрижке и уход в подарок"],
+  ["Стрижка, уход в подарок при первом посещении", 2500, "Тот же комплекс у мастера другой категории"],
+  ["Массаж для беременных", 3000, ""],
+  ["Скульптурирующий массаж лица", 2800, ""]
+];
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const rub = n => n.toLocaleString('ru-RU') + ' ₽';
+
+const count = s => Object.values(s.groups).reduce((a, g) => a + g.length, 0);
+const range = s => {
+  const all = Object.values(s.groups).flat().map(x => x[1]);
+  return `от ${rub(Math.min(...all))}`;
+};
+
+let active = 0;
+
+$('shops').innerHTML = SHOPS.map((s, i) =>
+  `<button class="shop" type="button" aria-pressed="${i === 0}" data-i="${i}">
+     <b>${esc(s.name)}</b><span>${esc(s.note)}</span><em>${count(s)} услуг · ${range(s)}</em>
+   </button>`).join('');
+
+function draw(){
+  const s = SHOPS[active];
+  $('groups').innerHTML = Object.entries(s.groups).map(([g, items]) => `
+    <section class="grp">
+      <div class="grp-h"><h3>${esc(g)}</h3><span>${items.length} услуг</span></div>
+      ${items.map(([name, price, desc]) => `
+        <article class="item">
+          <div class="item-top"><h4>${esc(name)}</h4><span class="pr">${rub(price)}</span></div>
+          ${desc ? `<p class="d">${esc(desc)}</p>` : ''}
+        </article>`).join('')}
+    </section>`).join('');
+}
+
+$('shops').addEventListener('click', e => {
+  const b = e.target.closest('.shop'); if (!b) return;
+  active = +b.dataset.i;
+  $('shops').querySelectorAll('.shop').forEach(x => x.setAttribute('aria-pressed', x === b));
+  draw();
+});
+
+$('promos').innerHTML = PROMOS.map(([name, price, desc]) =>
+  `<div class="promo"><b>${esc(name)}</b><span class="pr">${rub(price)}</span>${desc ? `<span>${esc(desc)}</span>` : ''}</div>`).join('');
+
+$('form').addEventListener('submit', e => {
+  e.preventDefault();
+  const phone = $('phone').value.trim();
+  if (phone.replace(/\D/g, '').length < 10){ $('err').hidden = false; $('phone').focus(); return; }
+  $('err').hidden = true;
+  const name = $('name').value.trim() || 'без имени';
+  $('done').hidden = false;
+  $('done').innerHTML = `<b>Демо-режим</b>
+    <p>${esc(name)} · ${esc(phone)}. Заявка никуда не уходит: это макет.
+    На готовом сайте она придёт администратору.
+    Сейчас позвоните, пожалуйста, по номеру <a href="tel:+79639128229">+7 963 912-82-29</a>.</p>`;
+});
+
+$('phone').addEventListener('input', () => { $('err').hidden = true; });
+
+draw();
+</script>
+</body>
+</html>
